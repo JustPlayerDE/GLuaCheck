@@ -11,7 +11,7 @@ namespace GLuaCheck
 {
     class Program
     {
-        public class iScannableItem
+        public class IScannableItem
         {
             public Regex DetectionRegex { get; set; }
 
@@ -27,7 +27,7 @@ namespace GLuaCheck
             }
 
         }
-        public class iScannableItemFound
+        public class IScannableItemFound
         { 
             public string Name { get; set; }
 
@@ -50,14 +50,14 @@ namespace GLuaCheck
         static void CreateConfigurationFiles()
         {
 
-            List<iScannableItem> Items = new List<iScannableItem>();
+            List<IScannableItem> Items = new List<IScannableItem>();
 
             /*
              * Default iScannableItem list
              */
             #region Default ScannableItems
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "_G Access",
                 DetectionRegex = new Regex("_G"),
@@ -65,14 +65,14 @@ namespace GLuaCheck
                 Severity = 3
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Lua execution",
                 DetectionRegex = new Regex("CompileString"),
                 Description = "Dynamic code execution",
                 Severity = 3
             });
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Lua execution",
                 DetectionRegex = new Regex("RunString"),
@@ -80,21 +80,21 @@ namespace GLuaCheck
                 Severity = 3
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Obfuscated Lua",
                 DetectionRegex = new Regex("/0[xX][0-9a-fA-F]+/"),
                 Description = "Can be used to hide a DRM or an Backdoor.",
                 Severity = 3
             });
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Obfuscated Lua",
                 DetectionRegex = new Regex("/\\[0-9]+\\[0-9]+/"),
                 Description = "Can be used to hide a DRM or an Backdoor.",
                 Severity = 3
             });
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Obfuscated Lua",
                 DetectionRegex = new Regex("/\\[xX] [0-9a-fA-F] [0-9a-fA-F]/"),
@@ -102,7 +102,7 @@ namespace GLuaCheck
                 Severity = 3
             });
                          
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "External Networking",
                 DetectionRegex = new Regex("^(?: http(s) ?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+$"),
@@ -110,7 +110,7 @@ namespace GLuaCheck
                 Severity = 2
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "External Networking",
                 DetectionRegex = new Regex("http.Fetch"),
@@ -118,7 +118,7 @@ namespace GLuaCheck
                 Severity = 2
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "External Networking",
                 DetectionRegex = new Regex("http.Post"),
@@ -126,7 +126,7 @@ namespace GLuaCheck
                 Severity = 2
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Console Command",
                 DetectionRegex = new Regex("game.ConsoleCommand"),
@@ -134,7 +134,7 @@ namespace GLuaCheck
                 Severity = 2
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Console Command",
                 DetectionRegex = new Regex("RunConsoleCommand"),
@@ -143,7 +143,7 @@ namespace GLuaCheck
             });
 
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "Console Command",
                 DetectionRegex = new Regex(":ConCommand"),
@@ -152,7 +152,7 @@ namespace GLuaCheck
             });
 
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "setmetatable",
                 DetectionRegex = new Regex("setmetatable"),
@@ -160,7 +160,7 @@ namespace GLuaCheck
                 Severity = 1
             });
 
-            Items.Add(new iScannableItem()
+            Items.Add(new IScannableItem()
             {
                 Name = "IP Tracking",
                 DetectionRegex = new Regex("hostip"),
@@ -172,14 +172,14 @@ namespace GLuaCheck
             File.WriteAllText("./glc_checks.json", JsonConvert.SerializeObject(Items, Formatting.Indented));
         }
 
-        static List<iScannableItem> LoadConfiguration()
+        static List<IScannableItem> LoadConfiguration()
         {
             if(!File.Exists("./glc_checks.json"))
             {
                 CreateConfigurationFiles();
             }
 
-            return JsonConvert.DeserializeObject<List<iScannableItem>>(File.ReadAllText("./glc_checks.json"));
+            return JsonConvert.DeserializeObject<List<IScannableItem>>(File.ReadAllText("./glc_checks.json"));
 
         }
 
@@ -190,8 +190,8 @@ namespace GLuaCheck
             string path = "";
             string logtype = "txt";
 
-            List<iScannableItem> scannableItems = LoadConfiguration();
-            List<iScannableItemFound> foundItems;
+            List<IScannableItem> scannableItems = LoadConfiguration();
+            List<IScannableItemFound> foundItems;
 
 
 
@@ -227,10 +227,10 @@ namespace GLuaCheck
             }
         }
 
-        static List<iScannableItemFound> ScanFiles(string[] files, List<iScannableItem> scan)
+        static List<IScannableItemFound> ScanFiles(string[] files, List<IScannableItem> scan)
         {
             char[] trimChars = {' '};
-            List<iScannableItemFound> foundItems = new List<iScannableItemFound>();
+            List<IScannableItemFound> foundItems = new List<IScannableItemFound>();
             foreach (var file in files)
             { 
                 string[] Lines = File.ReadAllLines(file);
@@ -253,7 +253,7 @@ namespace GLuaCheck
                                 snip = snip + "\n" + Lines[Line + 1].Trim(trimChars);
                             }
 
-                            foundItems.Add(new iScannableItemFound()
+                            foundItems.Add(new IScannableItemFound()
                             { 
                                 Name = scanItem.Name,
                                 Filename = file,
@@ -269,7 +269,7 @@ namespace GLuaCheck
             return foundItems;
         }
 
-        static void WriteLogFiles(List<iScannableItemFound> itemFounds,string type)
+        static void WriteLogFiles(List<IScannableItemFound> itemFounds,string type)
         {
             string file = "./glc_logs.";
 
