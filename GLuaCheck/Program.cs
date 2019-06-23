@@ -52,6 +52,11 @@ namespace GLuaCheck
 
             List<iScannableItem> Items = new List<iScannableItem>();
 
+            /*
+             * Default iScannableItem list
+             */
+            #region Default ScannableItems
+
             Items.Add(new iScannableItem()
             {
                 Name = "_G Access",
@@ -161,7 +166,8 @@ namespace GLuaCheck
                 DetectionRegex = new Regex("IP Tracking"),
                 Description = "Allows getting IP address of the server. Often used for statistics or tracking backdoored servers.",
                 Severity = 1
-            }); 
+            });
+            #endregion
 
             File.WriteAllText("./glc_checks.json", JsonConvert.SerializeObject(Items, Formatting.Indented));
         }
