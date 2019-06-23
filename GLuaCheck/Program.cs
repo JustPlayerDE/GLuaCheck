@@ -279,7 +279,7 @@ namespace GLuaCheck
                     File.WriteAllText(file+"json", JsonConvert.SerializeObject(itemFounds, Formatting.Indented));
                     break;
                 default: 
-                    file = file + "txt";
+                    file += "txt";
                     File.WriteAllLines(file, data);
                     break;
             }
