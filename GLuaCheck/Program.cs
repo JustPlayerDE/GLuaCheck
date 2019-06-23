@@ -162,8 +162,8 @@ namespace GLuaCheck
 
             Items.Add(new iScannableItem()
             {
-                Name = "hostip",
-                DetectionRegex = new Regex("IP Tracking"),
+                Name = "IP Tracking",
+                DetectionRegex = new Regex("hostip"),
                 Description = "Allows getting IP address of the server. Often used for statistics or tracking backdoored servers.",
                 Severity = 1
             });
